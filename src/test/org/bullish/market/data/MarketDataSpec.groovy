@@ -1,5 +1,6 @@
 package org.bullish.market.data
 
+import org.jctools.queues.SpscUnboundedArrayQueue
 import spock.lang.Specification
 
 import java.util.concurrent.ConcurrentLinkedQueue
@@ -23,7 +24,7 @@ class MarketDataSpec extends Specification {
         given:
         Queue<TestData> testDatas = new ConcurrentLinkedQueue<>()
         AtomicBoolean testFailed = new AtomicBoolean()
-        Queue<Tick> q = new ConcurrentLinkedQueue<>()
+        SpscUnboundedArrayQueue<Tick> q = new SpscUnboundedArrayQueue<>(8192)
         MarketDataFeed marketDataFeed = new MarketDataFeed(q) {
             @Override
             void update(Tick tick) {

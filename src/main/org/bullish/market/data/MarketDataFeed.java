@@ -2,20 +2,17 @@ package org.bullish.market.data;
 
 import lombok.Getter;
 
-import java.lang.invoke.VarHandle;
-import java.util.Date;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.LockSupport;
 
 /**
  * @author sadtheslayer
  */
-public class MarketDataFeed {
+public class MarketDataFeed<Q extends Queue<Tick>> {
     @Getter
-    private final Queue<Tick> q;
+    private final Q q;
     private final Thread thread;
 
     @Getter
@@ -29,7 +26,7 @@ public class MarketDataFeed {
     private final CountDownLatch stopped = new CountDownLatch(1);
 
     @SuppressWarnings("AlibabaAvoidManuallyCreateThread")
-    public MarketDataFeed(Queue<Tick> q) {
+    public MarketDataFeed(Q q) {
         this.q = q;
         this.thread = new Thread(this::consume, "consumer");
     }
@@ -39,7 +36,7 @@ public class MarketDataFeed {
     }
 
     private void consume() {
-outer:
+        outer:
         while (true) {
             Tick tick = q.poll();
             if (tick == null) {

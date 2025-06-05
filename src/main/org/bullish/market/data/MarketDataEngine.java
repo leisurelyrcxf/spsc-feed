@@ -11,9 +11,9 @@ import java.util.concurrent.TimeUnit;
 /**
  * @author sadtheslayer
  */
-public class MarketDataEngine {
+public class MarketDataEngine<Q extends Queue<Tick>> {
     public static final Tick EOF = new Tick("", -1);
-    private final Queue<Tick> q;
+    private final Q q;
     private final Thread thread;
     private final MarketDataFeed feed;
     private final CountDownLatch stopped = new CountDownLatch(1);
@@ -22,7 +22,7 @@ public class MarketDataEngine {
     double price;
 
     @SuppressWarnings("AlibabaAvoidManuallyCreateThread")
-    public MarketDataEngine(MarketDataFeed feed) {
+    public MarketDataEngine(MarketDataFeed<Q> feed) {
         this.q = feed.getQ();
         this.thread = new Thread(this::produce, "producer");
         this.feed = feed;
@@ -42,7 +42,7 @@ public class MarketDataEngine {
 
     private void offerTick(Tick tick) {
         q.offer(tick);
-        if (!(q instanceof ConcurrentLinkedQueue<Tick>)) {
+        if (!(q instanceof ConcurrentLinkedQueue /* no need fencing */)) {
             // If q is spscUnboundedArrayQueue
             VarHandle.fullFence();
         }

@@ -2,7 +2,6 @@ package org.bullish.market.data;
 
 import lombok.Getter;
 
-import java.lang.invoke.VarHandle;
 import java.util.Queue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
@@ -18,7 +17,7 @@ public class MarketDataEngine {
     private final CountDownLatch stopped = new CountDownLatch(1);
     private volatile boolean shouldStop;
     @Getter
-    private double price;
+    double price;
 
     @SuppressWarnings("AlibabaAvoidManuallyCreateThread")
     public MarketDataEngine(MarketDataFeed feed) {
@@ -48,7 +47,7 @@ public class MarketDataEngine {
         }
     }
 
-    private Tick createTick() {
+    Tick createTick() {
         price += 100.0;
         return new Tick("btc-usdt", price);
     }

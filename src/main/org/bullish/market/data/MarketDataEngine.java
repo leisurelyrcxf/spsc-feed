@@ -2,7 +2,9 @@ package org.bullish.market.data;
 
 import lombok.Getter;
 
+import java.lang.invoke.VarHandle;
 import java.util.Queue;
+import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
 
@@ -40,6 +42,10 @@ public class MarketDataEngine {
 
     private void offerTick(Tick tick) {
         q.offer(tick);
+        if (!(q instanceof ConcurrentLinkedQueue<Tick>)) {
+            // If q is spscUnboundedArrayQueue
+            VarHandle.fullFence();
+        }
         if (feed.isParked()) {
             feed.unpark();
         } else {

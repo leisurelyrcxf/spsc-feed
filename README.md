@@ -4,5 +4,5 @@ Verified using jcstress, see https://github.com/leisurelyrcxf/jcstress-memorder/
 
 Result:    Results across all configurations:
 
-RESULT     SAMPLES     FREQ       EXPECT       DESCRIPTION
-0         25,920,822  100.00%   Acceptable  Gracefully finished
+RESULT&nbsp;&nbsp;&nbsp;&nbsp;SAMPLES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FREQ&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;EXPECT&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;DESCRIPTION&nbsp;&nbsp;&nbsp;&nbsp;
+0&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;25,920,822&nbsp;&nbsp;100.00%&nbsp;&nbsp;&nbsp;Acceptable&nbsp;&nbsp;Gracefully&nbsp;finished

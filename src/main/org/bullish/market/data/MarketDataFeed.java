@@ -40,20 +40,18 @@ public class MarketDataFeed<Q extends Queue<Tick>> {
         while (true) {
             Tick tick = q.poll();
             if (tick == null) {
-                do {
+                
                     parked = true;
                     try {
                         tick = q.poll();
-                        if (tick != null) {
-                            break;
-                        }
+                        if (tick == null) {
                         // q.poll() == null -> engine[q.offer()] -> engine[feed.isParked() == true] -> engine[feed.unpark]
-                        LockSupport.park();
-                        continue outer;
+                            LockSupport.park();
+                            continue outer;
+                        }
                     } finally {
                         parked = false;
                     }
-                } while (false);
             }
             if (tick == MarketDataEngine.EOF) {
                 break;

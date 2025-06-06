@@ -36,7 +36,6 @@ public class MarketDataFeed<Q extends Queue<Tick>> {
     }
 
     private void consume() {
-        outer:
         while (true) {
             Tick tick = q.poll();
             if (tick == null) {
@@ -45,9 +44,9 @@ public class MarketDataFeed<Q extends Queue<Tick>> {
                     try {
                         tick = q.poll();
                         if (tick == null) {
-                        // q.poll() == null -> engine[q.offer()] -> engine[feed.isParked() == true] -> engine[feed.unpark]
                             LockSupport.park();
-                            continue outer;
+                            // q.poll() == null -> engine[q.offer()] -> engine[feed.isParked() == true] -> engine[feed.unpark]
+                            continue;
                         }
                     } finally {
                         parked = false;
